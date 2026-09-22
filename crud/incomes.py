@@ -11,6 +11,10 @@ def get_by_id(db: Session, income_id: int) -> Income | None:
     return db.query(Income).filter(Income.id == income_id).first()
 
 
+def get_by_month(db: Session, month: str) -> Income | None:
+    return db.query(Income).filter(Income.month == month).first()
+
+
 def create(db: Session, data: IncomeCreate) -> Income:
     income = Income(**data.model_dump())
     db.add(income)

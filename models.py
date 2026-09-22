@@ -20,4 +20,4 @@ class Income(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     amount = Column(Integer, nullable=False)
-    month = Column(String(7), nullable=False)  # 例: "2026-09"
+    month = Column(String(7), nullable=False, unique=True)  # 例: "2026-09"

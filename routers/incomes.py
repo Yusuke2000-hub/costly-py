@@ -22,6 +22,8 @@ def get_income(income_id: int, db: Session = Depends(get_db)):
 
 @router.post("/", response_model=IncomeResponse, status_code=201)
 def create_income(data: IncomeCreate, db: Session = Depends(get_db)):
+    if income_crud.get_by_month(db, data.month) is not None:
+        raise HTTPException(status_code=409, detail=f"Income for month '{data.month}' already exists")
     return income_crud.create(db, data)
 
 
