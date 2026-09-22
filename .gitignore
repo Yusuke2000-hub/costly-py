@@ -13,3 +13,12 @@ env/
 # IDE
 .idea/
 .vscode/
+
+# AWSキーペア
+*.pem
+
+# Terraform
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/*.tfvars
