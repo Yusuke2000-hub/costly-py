@@ -128,17 +128,26 @@ resource "aws_instance" "main" {
     systemctl start mysqld
     systemctl enable mysqld
 
-    # 初回起動時の一時パスワードを取得
-    TEMP_PASS=$(grep 'temporary password' /var/log/mysqld.log | tail -1 | awk '{print $NF}')
+    # MySQLが完全起動し一時パスワードがログに書き込まれるまで待機（最大60秒）
+    for i in $(seq 1 12); do
+      TEMP_PASS=$(grep 'temporary password' /var/log/mysqld.log 2>/dev/null | tail -1 | awk '{print $NF}')
+      [ -n "$${TEMP_PASS}" ] && break
+      sleep 5
+    done
 
-    # rootパスワード変更・DB・アプリユーザー作成
-    mysql --connect-expired-password -u root -p"$${TEMP_PASS}" <<SQL
-    ALTER USER 'root'@'localhost' IDENTIFIED BY '${var.db_root_password}';
-    CREATE DATABASE IF NOT EXISTS ${var.db_name} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-    CREATE USER IF NOT EXISTS '${var.db_app_user}'@'localhost' IDENTIFIED BY '${var.db_app_password}';
-    GRANT ALL PRIVILEGES ON ${var.db_name}.* TO '${var.db_app_user}'@'localhost';
-    FLUSH PRIVILEGES;
-    SQL
+    # rootパスワード変更（-eフラグで実行: ヒアドキュメントのインデント問題を回避）
+    mysql --connect-expired-password -u root -p"$${TEMP_PASS}" \
+      -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${var.db_root_password}';"
+
+    # DB・アプリユーザー作成・権限付与
+    mysql -u root -p"${var.db_root_password}" \
+      -e "CREATE DATABASE IF NOT EXISTS ${var.db_name} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
+
+    mysql -u root -p"${var.db_root_password}" \
+      -e "CREATE USER IF NOT EXISTS '${var.db_app_user}'@'localhost' IDENTIFIED BY '${var.db_app_password}';"
+
+    mysql -u root -p"${var.db_root_password}" \
+      -e "GRANT ALL PRIVILEGES ON ${var.db_name}.* TO '${var.db_app_user}'@'localhost'; FLUSH PRIVILEGES;"
   EOF
 
   lifecycle {
