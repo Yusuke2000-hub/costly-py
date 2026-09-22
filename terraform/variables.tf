@@ -45,3 +45,27 @@ variable "instance_type" {
   type        = string
   default     = "t3.micro"
 }
+
+variable "db_name" {
+  description = "作成するMySQLデータベース名"
+  type        = string
+  default     = "costly_py"
+}
+
+variable "db_app_user" {
+  description = "アプリ用MySQLユーザー名"
+  type        = string
+  default     = "costly_user"
+}
+
+variable "db_root_password" {
+  description = "MySQLのrootパスワード（terraform.tfvarsで上書きすること）"
+  type        = string
+  sensitive   = true
+}
+
+variable "db_app_password" {
+  description = "アプリ用MySQLユーザーのパスワード（terraform.tfvarsで上書きすること）"
+  type        = string
+  sensitive   = true
+}
