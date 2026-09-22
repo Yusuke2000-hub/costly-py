@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+
+# 環境変数（DB接続情報などを含むため必ずignore）
+.env
+.env.*
+
+# IDE
+.idea/
+.vscode/
