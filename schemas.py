@@ -1,17 +1,17 @@
 from pydantic import BaseModel, ConfigDict
-from datetime import date, datetime
+from datetime import date as DateType, datetime
 
 
 class ExpenseCreate(BaseModel):
     category: str
     amount: int
-    date: date
+    date: DateType
 
 
 class ExpenseUpdate(BaseModel):
     category: str | None = None
     amount: int | None = None
-    date: date | None = None
+    date: DateType | None = None
 
 
 class ExpenseResponse(BaseModel):
@@ -20,5 +20,5 @@ class ExpenseResponse(BaseModel):
     id: int
     category: str
     amount: int
-    date: date
+    date: DateType
     created_at: datetime
