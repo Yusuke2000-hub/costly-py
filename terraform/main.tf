@@ -111,13 +111,34 @@ resource "aws_instance" "main" {
   vpc_security_group_ids = [aws_security_group.ec2.id]
   key_name               = var.key_name
 
-  # 起動時にPython環境を自動セットアップ
+  # 起動時にPython環境・MySQLを自動セットアップ
   user_data = <<-EOF
     #!/bin/bash
-    dnf install -y python3.12 python3.12-pip git
+    set -e
+    exec > /var/log/user-data.log 2>&1
 
+    # ---------- Python ----------
+    dnf install -y python3.12 python3.12-pip git
     mkdir -p /opt/costly-py
     pip3.12 install fastapi uvicorn sqlalchemy alembic pymysql pydantic
+
+    # ---------- MySQL 8.4 ----------
+    dnf install -y https://dev.mysql.com/get/mysql84-community-release-el9-1.noarch.rpm
+    dnf install -y mysql-community-server
+    systemctl start mysqld
+    systemctl enable mysqld
+
+    # 初回起動時の一時パスワードを取得
+    TEMP_PASS=$(grep 'temporary password' /var/log/mysqld.log | tail -1 | awk '{print $NF}')
+
+    # rootパスワード変更・DB・アプリユーザー作成
+    mysql --connect-expired-password -u root -p"$${TEMP_PASS}" <<SQL
+    ALTER USER 'root'@'localhost' IDENTIFIED BY '${var.db_root_password}';
+    CREATE DATABASE IF NOT EXISTS ${var.db_name} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+    CREATE USER IF NOT EXISTS '${var.db_app_user}'@'localhost' IDENTIFIED BY '${var.db_app_password}';
+    GRANT ALL PRIVILEGES ON ${var.db_name}.* TO '${var.db_app_user}'@'localhost';
+    FLUSH PRIVILEGES;
+    SQL
   EOF
 
   lifecycle {
