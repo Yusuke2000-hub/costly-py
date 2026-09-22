@@ -22,3 +22,21 @@ class ExpenseResponse(BaseModel):
     amount: int
     date: DateType
     created_at: datetime
+
+
+class IncomeCreate(BaseModel):
+    amount: int
+    month: str  # 例: "2026-09"
+
+
+class IncomeUpdate(BaseModel):
+    amount: int | None = None
+    month: str | None = None
+
+
+class IncomeResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    amount: int
+    month: str
