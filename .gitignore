@@ -22,3 +22,8 @@ terraform/.terraform/
 terraform/*.tfstate
 terraform/*.tfstate.*
 terraform/*.tfvars
+
+# バックグラウンド起動ログ・PIDファイル
+logs/
+uvicorn.pid
+nohup.out

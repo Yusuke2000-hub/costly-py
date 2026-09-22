@@ -1,0 +1,2 @@
+# シェルスクリプトはEC2（Linux）で実行するためLF改行を強制
+*.sh text eol=lf
