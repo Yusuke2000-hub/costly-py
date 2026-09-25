@@ -9,6 +9,7 @@ env/
 # 環境変数（DB接続情報などを含むため必ずignore）
 .env
 .env.*
+!.env.example
 
 # IDE
 .idea/
