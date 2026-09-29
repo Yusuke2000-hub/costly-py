@@ -12,6 +12,12 @@ RaiseTech初級編 最終課題として、要件定義〜AWSデプロイまで�
   - 生活防衛力（＝支出 ÷ 収入 × 100）を算出・表示
   - 今月の総支出・費目別の内訳表示
 
+## 画面イメージ
+
+![ダッシュボード](docs/images/dashboard.png)
+![支出登録](docs/images/expense_new.png)
+![収入登録](docs/images/income_new.png)
+
 ## 技術スタック
 
 | レイヤー | 技術 |
@@ -81,9 +87,13 @@ EC2上でのアプリの起動・停止：
 
 ## ドキュメント
 
-| ドキュメント | 内容 |
-|---|---|
-| [要件定義書](docs/requirements.md) | 機能要件・非機能要件、技術選定 |
+| ドキュメント | ファイル | 内容 |
+|---|---|---|
+| 要件定義書 | [docs/requirements.md](docs/requirements.md) | 機能要件・非機能要件、技術選定 |
+| 画面設計書 | [docs/screens.md](docs/screens.md) | 各画面の目的・入力項目 |
+| DB設計書 | [docs/db-design.md](docs/db-design.md) | テーブル定義・ER図 |
+| API設計書 | [docs/api-design.md](docs/api-design.md) | エンドポイント仕様 |
+| インフラ構成書 | [docs/infrastructure.md](docs/infrastructure.md) | AWS構成図・プロビジョニング |
 
 ## 現在の進捗状況
 

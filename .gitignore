@@ -1,3 +1,4 @@
+
 # Python
 __pycache__/
 *.db
@@ -29,3 +30,5 @@ terraform/*.tfvars
 logs/
 uvicorn.pid
 nohup.out
+/terraform.tfstate
+/terraform.tfstate.*
