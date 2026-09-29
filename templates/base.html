@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}COSTLY{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+  <header class="bg-indigo-700 text-white py-4 px-6 shadow">
+    <div class="max-w-2xl mx-auto flex items-center justify-between">
+      <a href="/" class="text-xl font-bold tracking-wide">COSTLY</a>
+      <nav class="space-x-4 text-sm">
+        <a href="/" class="hover:underline">ダッシュボード</a>
+        <a href="/expenses/new" class="hover:underline">支出登録</a>
+        <a href="/incomes/new" class="hover:underline">収入登録</a>
+      </nav>
+    </div>
+  </header>
+  <main class="max-w-2xl mx-auto py-8 px-4">
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>
